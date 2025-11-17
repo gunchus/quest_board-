@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" href="/styles/style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Board</title>
+    <style>
+        .quest-board-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .quest-board-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .quest-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .quest-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .quest-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .quest-description {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .quest-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .quest-status.active {
+            background: #4caf50;
+            color: white;
+        }
+
+        .quest-status.pending {
+            background: #ff9800;
+            color: white;
+        }
+
+        .quest-status.completed {
+            background: #2196f3;
+            color: white;
+        }
+
+        .quest-category {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 10px;
+            text-transform: uppercase;
+        }
+
+        .category-cardio {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .category-strength {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        .category-flexibility {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .category-wellness {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .complete-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .complete-btn:hover {
+            background: #45a049;
+        }
+
+        .complete-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .refresh-btn:hover {
+            background: #5568d3;
+        }
+
+        .coin-display {
+            background: #ffd700;
+            color: #333;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .shop-btn {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .shop-btn:hover {
+            background: #f57c00;
+        }
+
+        .shop-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .shop-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 900px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .shop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .shop-close {
+            font-size: 32px;
+            font-weight: bold;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .shop-close:hover {
+            color: #333;
+        }
+
+        .shop-section {
+            margin-bottom: 30px;
+        }
+
+        .shop-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .shop-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .shop-item {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .shop-item:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .shop-item.owned {
+            border-color: #4caf50;
+            background: #e8f5e9;
+        }
+
+        .shop-item.equipped {
+            border-color: #ffd700;
+            background: #fffde7;
+        }
+
+        .shop-item-emoji {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .shop-item-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .shop-item-price {
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .buy-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .buy-btn:hover {
+            background: #45a049;
+        }
+
+        .buy-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .equip-btn {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .equip-btn:hover {
+            background: #1976d2;
+        }
+
+        .profile-avatar {
+            font-size: 48px;
+            margin-right: 10px;
+        }
+
+        .profile-title {
+            color: #667eea;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: #667eea;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .btn-login:hover {
+            opacity: 0.9;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .signup-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #f44336;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #main-content {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login Page -->
+<div id="login-page">
+    <div class="login-container">
+        <div class="login-header">
+            <h2>🎯 Quest Board Login</h2>
+            <p style="color: #666; margin-top: 10px;">Sign in to view your quests</p>
+        </div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+            <button type="submit" class="btn-login">Login</button>
+            <div class="error-message" id="error-message"></div>
+        </form>
+        <div class="signup-link">
+            Don't have an account? <a href="#" id="signup-link">Sign up</a>
+        </div>
+    </div>
+</div>
+
+<!-- Main Quest Board (Hidden until login) -->
+<div id="main-content">
+    <div class="quest-board-header">
+        <h1 style="margin: 0; font-size: 32px;">💪 Daily Health Quest Board</h1>
+        <p style="margin: 10px 0 0 0; opacity: 0.9;">Complete daily fitness and wellness challenges</p>
+    </div>
+
+    <div class="user-profile-details-style" style="padding: 15px; background: #f5f5f5;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center;">
+                <span class="profile-avatar" id="user-avatar">👤</span>
+                <div>
+                    <span id="user_status">Welcome, Adventurer!</span>
+                    <span class="profile-title" id="user-title"></span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="coin-display">
+                    <span>💰</span>
+                    <span id="coin-count">0</span>
+                    <span>coins</span>
+                </div>
+                <button id="shop-btn" class="shop-btn">🛒 Shop</button>
+                <button id="logout-btn" style="padding: 8px 20px; background: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="quest-board-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="color: #333; margin: 0;">Your Daily Health Quests</h2>
+            <button id="refresh-quests" class="refresh-btn">🔄 Get New Quests</button>
+        </div>
+        <div id="quest-list">
+            <!-- Quests will be loaded here dynamically -->
+        </div>
+    </div>
+</div>
+
+<!-- Shop Modal -->
+<div id="shop-modal" class="shop-modal">
+    <div class="shop-content">
+        <div class="shop-header">
+            <h2 style="margin: 0;">🛒 Quest Shop</h2>
+            <span class="shop-close" id="shop-close">&times;</span>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div class="coin-display" style="font-size: 24px;">
+                <span>💰</span>
+                <span id="shop-coin-count">0</span>
+                <span>coins</span>
+            </div>
+        </div>
+
+        <div class="shop-section">
+            <h3>🎭 Avatars</h3>
+            <div class="shop-items" id="avatars-grid">
+                <!-- Avatars will be loaded here -->
+            </div>
+        </div>
+
+        <div class="shop-section">
+            <h3>✨ Cosmetics</h3>
+            <div class="shop-items" id="cosmetics-grid">
+                <!-- Cosmetics will be loaded here -->
+            </div>
+        </div>
+
+        <div class="shop-section">
+            <h3>📦 VIP Crates</h3>
+            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Special crates with random rewards! VIP level required to open.</p>
+            <div class="shop-items" id="crates-grid">
+                <!-- VIP Crates will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize coins
+    let coins = parseInt(localStorage.getItem('coins')) || 0;
+    let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || [];
+    let equippedAvatar = localStorage.getItem('equippedAvatar') || '👤';
+    let equippedTitle = localStorage.getItem('equippedTitle') || '';
+
+    // Update coin display
+    function updateCoins() {
+        document.getElementById('coin-count').textContent = coins;
+        document.getElementById('shop-coin-count').textContent = coins;
+        localStorage.setItem('coins', coins);
+    }
+
+    // Update avatar and title display
+    function updateProfile() {
+        document.getElementById('user-avatar').textContent = equippedAvatar;
+        document.getElementById('user-title').textContent = equippedTitle;
+    }
+
+    // Login functionality
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorMessage = document.getElementById('error-message');
+        
+        // Simple validation (in production, this should be server-side)
+        if (username && password) {
+            // Hide login page and show main content
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('user_status').textContent = 'Welcome, ' + username + '!';
+            
+            // Load quests and update UI
+            updateCoins();
+            updateProfile();
+            loadQuests();
+        } else {
+            errorMessage.textContent = 'Please enter both username and password';
+        }
+    });
+
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        document.getElementById('login-page').style.display = 'block';
+        document.getElementById('main-content').style.display = 'none';
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('error-message').textContent = '';
+    });
+
+    // Signup link
+    document.getElementById('signup-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        alert('Signup functionality coming soon!');
+    });
+
+    // Shop modal functionality
+    document.getElementById('shop-btn').addEventListener('click', function() {
+        document.getElementById('shop-modal').style.display = 'block';
+        loadShop();
+    });
+
+    document.getElementById('shop-close').addEventListener('click', function() {
+        document.getElementById('shop-modal').style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target == document.getElementById('shop-modal')) {
+            document.getElementById('shop-modal').style.display = 'none';
+        }
+    });
+
+    // Load quests from API
+    function loadQuests() {
+        document.getElementById('quest-list').innerHTML = '<p style="text-align: center; color: #666;">Loading quests...</p>';
+        
+        fetch('/api/quests?count=6')
+            .then(response => response.json())
+            .then(quests => {
+                const questList = document.getElementById('quest-list');
+                questList.innerHTML = '';
+                
+                quests.forEach(quest => {
+                    const questCard = document.createElement('div');
+                    questCard.className = 'quest-card';
+                    questCard.setAttribute('data-quest-id', quest.quest_id);
+                    
+                    const isCompleted = localStorage.getItem('quest_' + quest.quest_id) === 'completed';
+                    
+                    questCard.innerHTML = `
+                        <div>
+                            <span class="quest-category category-${quest.category}">${quest.category}</span>
+                            <span class="quest-status ${isCompleted ? 'completed' : quest.status}">
+                                ${isCompleted ? 'COMPLETED' : quest.status.toUpperCase()}
+                            </span>
+                        </div>
+                        <div class="quest-title">${quest.title}</div>
+                        <div class="quest-description">${quest.description}</div>
+                        <button class="complete-btn" onclick="completeQuest(${quest.quest_id})" ${isCompleted ? 'disabled' : ''}>
+                            ${isCompleted ? '✓ Completed' : 'Mark as Complete'}
+                        </button>
+                    `;
+                    questList.appendChild(questCard);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading quests:', error);
+                document.getElementById('quest-list').innerHTML = '<p style="color: #f44336;">Error loading quests. Please try again.</p>';
+            });
+    }
+
+    // Complete a quest
+    function completeQuest(questId) {
+        localStorage.setItem('quest_' + questId, 'completed');
+        const questCard = document.querySelector(`[data-quest-id="${questId}"]`);
+        const statusSpan = questCard.querySelector('.quest-status');
+        const completeBtn = questCard.querySelector('.complete-btn');
+        
+        statusSpan.className = 'quest-status completed';
+        statusSpan.textContent = 'COMPLETED';
+        completeBtn.disabled = true;
+        completeBtn.textContent = '✓ Completed';
+        
+        // Award coins for completing quest
+        const coinsEarned = 10;
+        coins += coinsEarned;
+        updateCoins();
+        
+        // Show celebration message
+        const celebration = document.createElement('div');
+        celebration.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #4caf50; color: white; padding: 20px 40px; border-radius: 10px; font-size: 24px; font-weight: bold; z-index: 1000;';
+        celebration.innerHTML = `🎉 Quest Completed! 🎉<br><span style="font-size: 18px;">+${coinsEarned} coins 💰</span>`;
+        document.body.appendChild(celebration);
+        
+        setTimeout(() => {
+            celebration.remove();
+        }, 2500);
+    }
+
+    // Load shop items
+    function loadShop() {
+        fetch('/api/shop')
+            .then(response => response.json())
+            .then(shopData => {
+                renderShopItems(shopData.avatars, 'avatars-grid', 'avatar');
+                renderShopItems(shopData.cosmetics, 'cosmetics-grid', 'cosmetic');
+                renderCrateItems(shopData.vip_crates, 'crates-grid');
+            })
+            .catch(error => {
+                console.error('Error loading shop:', error);
+            });
+    }
+
+    // Render VIP crate items
+    function renderCrateItems(crates, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        
+        crates.forEach(crate => {
+            const crateDiv = document.createElement('div');
+            crateDiv.className = 'shop-item';
+            crateDiv.style.cursor = 'pointer';
+            
+            crateDiv.innerHTML = `
+                <div class="shop-item-emoji">${crate.emoji}</div>
+                <div class="shop-item-name">${crate.name}</div>
+                <div style="font-size: 12px; color: #ff9800; margin: 5px 0;">VIP ${crate.vip_required}+ Required</div>
+                <div class="shop-item-price">${crate.price} coins</div>
+                <div style="font-size: 11px; color: #666; margin-top: 5px;">${crate.description}</div>
+                <button class="buy-btn" onclick="openCrate('${crate.id}', ${crate.price}, ${crate.vip_required})">Open Crate</button>
+            `;
+            
+            container.appendChild(crateDiv);
+        });
+    }
+
+    // Open a crate
+    function openCrate(crateId, price, vipRequired) {
+        // For demo purposes, let's assume user has VIP level 5 (can access all crates)
+        const userVipLevel = parseInt(localStorage.getItem('vipLevel')) || 5;
+        
+        if (coins < price) {
+            alert('Not enough coins! You need ' + price + ' coins to open this crate.');
+            return;
+        }
+        
+        // Deduct coins
+        coins -= price;
+        updateCoins();
+        localStorage.setItem('coins', coins);
+        
+        // Call API to open crate
+        fetch(`/api/vip/crates/${crateId}/open`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ vip_level: userVipLevel })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.error) {
+                alert('Error: ' + result.error);
+                // Refund coins if there was an error
+                coins += price;
+                updateCoins();
+                localStorage.setItem('coins', coins);
+                return;
+            }
+            
+            // Show reward animation
+            const reward = result.reward;
+            const rewardDiv = document.createElement('div');
+            rewardDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 40px 60px;
+                border-radius: 15px;
+                font-size: 24px;
+                font-weight: bold;
+                z-index: 2000;
+                text-align: center;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                animation: bounce 0.5s ease;
+            `;
+            
+            const rarityColors = {
+                'common': '#9e9e9e',
+                'uncommon': '#4caf50',
+                'rare': '#2196f3',
+                'epic': '#9c27b0',
+                'legendary': '#ff9800',
+                'mythic': '#f44336'
+            };
+            
+            rewardDiv.innerHTML = `
+                <div style="font-size: 64px; margin-bottom: 20px;">${reward.emoji}</div>
+                <div style="font-size: 28px; margin-bottom: 10px;">${reward.item}</div>
+                <div style="font-size: 16px; color: ${rarityColors[reward.rarity]}; text-transform: uppercase; letter-spacing: 2px;">
+                    ${reward.rarity}
+                </div>
+                ${reward.type === 'points' ? `<div style="font-size: 20px; margin-top: 15px;">+${reward.value} coins 💰</div>` : ''}
+            `;
+            
+            document.body.appendChild(rewardDiv);
+            
+            // Add bounce animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes bounce {
+                    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+                    50% { transform: translate(-50%, -50%) scale(1.1); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // If reward is points, add them to coins
+            if (reward.type === 'points' && reward.value) {
+                coins += reward.value;
+                updateCoins();
+                localStorage.setItem('coins', coins);
+            }
+            
+            setTimeout(() => {
+                rewardDiv.remove();
+                style.remove();
+            }, 3500);
+        })
+        .catch(error => {
+            console.error('Error opening crate:', error);
+            alert('Error opening crate. Please try again.');
+            // Refund coins
+            coins += price;
+            updateCoins();
+            localStorage.setItem('coins', coins);
+        });
+    }
+
+    // Render shop items
+    function renderShopItems(items, containerId, itemType) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        
+        items.forEach(item => {
+            const owned = ownedItems.includes(item.id);
+            const equipped = (itemType === 'avatar' && equippedAvatar === item.emoji) ||
+                            (item.type === 'title' && equippedTitle === item.emoji + ' ' + item.name);
+            
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'shop-item' + (owned ? ' owned' : '') + (equipped ? ' equipped' : '');
+            
+            let buttonHTML = '';
+            if (!owned) {
+                buttonHTML = `<button class="buy-btn" onclick="buyItem('${item.id}', ${item.price}, '${itemType}')">Buy - ${item.price} 💰</button>`;
+            } else if (!equipped && (itemType === 'avatar' || item.type === 'title')) {
+                buttonHTML = `<button class="equip-btn" onclick="equipItem('${item.id}', '${item.emoji}', '${item.name}', '${item.type}')">Equip</button>`;
+            } else if (equipped) {
+                buttonHTML = `<button class="equip-btn" disabled>Equipped ✓</button>`;
+            } else {
+                buttonHTML = `<button class="buy-btn" disabled>Owned ✓</button>`;
+            }
+            
+            itemDiv.innerHTML = `
+                <div class="shop-item-emoji">${item.emoji}</div>
+                <div class="shop-item-name">${item.name}</div>
+                <div class="shop-item-price">${owned ? 'Owned' : item.price + ' coins'}</div>
+                ${buttonHTML}
+            `;
+            
+            container.appendChild(itemDiv);
+        });
+    }
+
+    // Buy item
+    function buyItem(itemId, price, itemType) {
+        if (coins >= price) {
+            coins -= price;
+            ownedItems.push(itemId);
+            localStorage.setItem('coins', coins);
+            localStorage.setItem('ownedItems', JSON.stringify(ownedItems));
+            updateCoins();
+            loadShop(); // Refresh shop display
+            
+            // Show purchase success
+            const message = document.createElement('div');
+            message.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #4caf50; color: white; padding: 20px 40px; border-radius: 10px; font-size: 20px; font-weight: bold; z-index: 2000;';
+            message.textContent = '✓ Purchase Successful!';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 1500);
+        } else {
+            alert('Not enough coins! Complete more quests to earn coins.');
+        }
+    }
+
+    // Equip item
+    function equipItem(itemId, emoji, name, type) {
+        if (type === 'avatar') {
+            equippedAvatar = emoji;
+            localStorage.setItem('equippedAvatar', emoji);
+        } else if (type === 'title') {
+            equippedTitle = emoji + ' ' + name;
+            localStorage.setItem('equippedTitle', equippedTitle);
+        }
+        updateProfile();
+        loadShop(); // Refresh shop display
+    }
+
+    // Refresh quests button
+    document.getElementById('refresh-quests').addEventListener('click', function() {
+        // Clear completed quests from localStorage
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('quest_')) {
+                localStorage.removeItem(key);
+            }
+        });
+        loadQuests();
+    });
+</script>
+
+</body>
+</html>
