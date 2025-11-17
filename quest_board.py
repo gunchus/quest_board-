@@ -72,12 +72,12 @@ def generate_random_quests(count=5):
 @app.route('/', methods=['GET'])
 @app.route('/quest_board', methods=['GET'])
 def quest_board_entry():
-    return send_file("client/quest_board.html")
+    return send_file("quest_board.html")
 
 # Returns start html for specific quest
 @app.route('/quest_board/quests/<quest_id>', methods=['GET'])
 def quest_board_quest_id(quest_id: int):
-    return send_file("client/quest_board.html")
+    return send_file("quest_board.html")
 
 # Shop items data
 SHOP_ITEMS = {
@@ -281,4 +281,4 @@ def serve_scripts(script_name: str):
     abort(404, description=script_name + " not found")
 
 if __name__ == '__main__':
-    app.run(port=5001, debug=True)
+    app.run(port=5002, debug=True)

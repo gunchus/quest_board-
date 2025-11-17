@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quest Board</title>
+    <title>Quest Board - Mock</title>
     <style>
-        .user-profile-details-style {
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            padding: 10px; 
-            background: #bdc4cc; 
-            color: #171010;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
         }
 
         .quest-board-header {
@@ -405,6 +403,15 @@
         #main-content {
             display: none;
         }
+
+        .user-profile-details-style {
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 10px; 
+            background: #bdc4cc; 
+            color: #171010;
+        }
     </style>
 </head>
 <body>
@@ -514,8 +521,125 @@
 </div>
 
 <script>
+    // Mock data for quests
+    const MOCK_QUESTS = [
+        {
+            quest_id: 1,
+            title: "Running Challenge",
+            description: "Complete 25 minutes of running",
+            category: "cardio",
+            status: "active"
+        },
+        {
+            quest_id: 2,
+            title: "Push-ups Challenge",
+            description: "Complete 30 reps of push-ups",
+            category: "strength",
+            status: "active"
+        },
+        {
+            quest_id: 3,
+            title: "Yoga session Challenge",
+            description: "Complete 20 minutes of yoga session",
+            category: "flexibility",
+            status: "active"
+        },
+        {
+            quest_id: 4,
+            title: "Drink water Challenge",
+            description: "Complete 8 glasses of drink water",
+            category: "wellness",
+            status: "active"
+        },
+        {
+            quest_id: 5,
+            title: "Squats Challenge",
+            description: "Complete 45 reps of squats",
+            category: "strength",
+            status: "active"
+        },
+        {
+            quest_id: 6,
+            title: "Walking Challenge",
+            description: "Complete 30 minutes of walking",
+            category: "cardio",
+            status: "active"
+        }
+    ];
+
+    // Mock data for shop
+    const MOCK_SHOP = {
+        avatars: [
+            {id: "avatar_1", name: "Fitness Pro", emoji: "🏋️", price: 50, type: "avatar"},
+            {id: "avatar_2", name: "Yoga Master", emoji: "🧘", price: 50, type: "avatar"},
+            {id: "avatar_3", name: "Runner", emoji: "🏃", price: 50, type: "avatar"},
+            {id: "avatar_4", name: "Cyclist", emoji: "🚴", price: 75, type: "avatar"},
+            {id: "avatar_5", name: "Swimmer", emoji: "🏊", price: 75, type: "avatar"},
+            {id: "avatar_6", name: "Champion", emoji: "🏆", price: 100, type: "avatar"},
+            {id: "avatar_7", name: "Martial Artist", emoji: "🥋", price: 100, type: "avatar"},
+            {id: "avatar_8", name: "Boxer", emoji: "🥊", price: 100, type: "avatar"}
+        ],
+        cosmetics: [
+            {id: "border_1", name: "Gold Border", emoji: "✨", price: 30, type: "border", color: "#ffd700"},
+            {id: "border_2", name: "Silver Border", emoji: "⭐", price: 20, type: "border", color: "#c0c0c0"},
+            {id: "border_3", name: "Bronze Border", emoji: "🔶", price: 10, type: "border", color: "#cd7f32"},
+            {id: "border_4", name: "Rainbow Border", emoji: "🌈", price: 150, type: "border", color: "linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff)"},
+            {id: "title_1", name: "Beginner", emoji: "🌱", price: 5, type: "title"},
+            {id: "title_2", name: "Warrior", emoji: "⚔️", price: 50, type: "title"},
+            {id: "title_3", name: "Legend", emoji: "👑", price: 100, type: "title"},
+            {id: "title_4", name: "Master", emoji: "🎖️", price: 200, type: "title"}
+        ],
+        vip_crates: [
+            {id: "bronze_crate", name: "Bronze VIP Crate", emoji: "📦", price: 100, type: "crate", vip_required: 1, description: "Basic VIP crate with common rewards"},
+            {id: "silver_crate", name: "Silver VIP Crate", emoji: "🎁", price: 250, type: "crate", vip_required: 2, description: "Advanced VIP crate with uncommon and rare rewards"},
+            {id: "gold_crate", name: "Gold VIP Crate", emoji: "🏆", price: 500, type: "crate", vip_required: 3, description: "Premium VIP crate with epic and legendary rewards"},
+            {id: "platinum_crate", name: "Platinum VIP Crate", emoji: "💫", price: 1000, type: "crate", vip_required: 5, description: "Ultimate VIP crate with guaranteed legendary rewards"}
+        ]
+    };
+
+    // VIP Crate rewards system - Complete data from quest_board.py
+    const VIP_CRATES = {
+        bronze_crate: {
+            rewards: [
+                {item: "Common Avatar", type: "avatar", emoji: "👤", probability: 0.50, rarity: "common"},
+                {item: "Basic Border", type: "border", emoji: "⬜", probability: 0.30, rarity: "common"},
+                {item: "50 Bonus Points", type: "points", emoji: "💰", value: 50, probability: 0.15, rarity: "uncommon"},
+                {item: "Epic Title", type: "title", emoji: "🎯", probability: 0.05, rarity: "rare"}
+            ]
+        },
+        silver_crate: {
+            rewards: [
+                {item: "Rare Avatar", type: "avatar", emoji: "🦸", probability: 0.40, rarity: "uncommon"},
+                {item: "Premium Border", type: "border", emoji: "🔷", probability: 0.30, rarity: "uncommon"},
+                {item: "150 Bonus Points", type: "points", emoji: "💎", value: 150, probability: 0.20, rarity: "rare"},
+                {item: "Legendary Title", type: "title", emoji: "👑", probability: 0.08, rarity: "epic"},
+                {item: "Mystery Reward", type: "special", emoji: "❓", probability: 0.02, rarity: "legendary"}
+            ]
+        },
+        gold_crate: {
+            rewards: [
+                {item: "Epic Avatar", type: "avatar", emoji: "🌟", probability: 0.35, rarity: "rare"},
+                {item: "Diamond Border", type: "border", emoji: "💠", probability: 0.25, rarity: "epic"},
+                {item: "300 Bonus Points", type: "points", emoji: "🔥", value: 300, probability: 0.20, rarity: "epic"},
+                {item: "Ultimate Title", type: "title", emoji: "⚡", probability: 0.15, rarity: "epic"},
+                {item: "Exclusive Avatar Pack", type: "avatar_pack", emoji: "🎭", probability: 0.04, rarity: "legendary"},
+                {item: "Jackpot 1000 Points", type: "points", emoji: "💸", value: 1000, probability: 0.01, rarity: "legendary"}
+            ]
+        },
+        platinum_crate: {
+            rewards: [
+                {item: "Legendary Avatar", type: "avatar", emoji: "🔱", probability: 0.30, rarity: "legendary"},
+                {item: "Cosmic Border", type: "border", emoji: "🌌", probability: 0.25, rarity: "legendary"},
+                {item: "500 Bonus Points", type: "points", emoji: "💵", value: 500, probability: 0.20, rarity: "legendary"},
+                {item: "Divine Title", type: "title", emoji: "✨", probability: 0.15, rarity: "legendary"},
+                {item: "Ultimate Pack", type: "ultimate_pack", emoji: "🎪", probability: 0.08, rarity: "mythic"},
+                {item: "MEGA JACKPOT 5000 Points", type: "points", emoji: "🏅", value: 5000, probability: 0.02, rarity: "mythic"}
+            ]
+        }
+    };
+
     // Initialize coins
-    let coins = parseInt(localStorage.getItem('coins')) || 0;
+    let coins = parseInt(localStorage.getItem('coins')) || 100; // Start with 100 coins for demo
     let ownedItems = JSON.parse(localStorage.getItem('ownedItems')) || [];
     let equippedAvatar = localStorage.getItem('equippedAvatar') || '👤';
     let equippedTitle = localStorage.getItem('equippedTitle') || '';
@@ -541,14 +665,11 @@
         const password = document.getElementById('password').value;
         const errorMessage = document.getElementById('error-message');
         
-        // Simple validation (in production, this should be server-side)
         if (username && password) {
-            // Hide login page and show main content
             document.getElementById('login-page').style.display = 'none';
             document.getElementById('main-content').style.display = 'block';
             document.getElementById('user_status').textContent = 'Welcome, ' + username + '!';
             
-            // Load quests and update UI
             updateCoins();
             updateProfile();
             loadQuests();
@@ -588,43 +709,33 @@
         }
     });
 
-    // Load quests from API
+    // Load quests from mock data
     function loadQuests() {
-        document.getElementById('quest-list').innerHTML = '<p style="text-align: center; color: #666;">Loading quests...</p>';
+        const questList = document.getElementById('quest-list');
+        questList.innerHTML = '';
         
-        fetch('/api/quests?count=6')
-            .then(response => response.json())
-            .then(quests => {
-                const questList = document.getElementById('quest-list');
-                questList.innerHTML = '';
-                
-                quests.forEach(quest => {
-                    const questCard = document.createElement('div');
-                    questCard.className = 'quest-card';
-                    questCard.setAttribute('data-quest-id', quest.quest_id);
-                    
-                    const isCompleted = localStorage.getItem('quest_' + quest.quest_id) === 'completed';
-                    
-                    questCard.innerHTML = `
-                        <div>
-                            <span class="quest-category category-${quest.category}">${quest.category}</span>
-                            <span class="quest-status ${isCompleted ? 'completed' : quest.status}">
-                                ${isCompleted ? 'COMPLETED' : quest.status.toUpperCase()}
-                            </span>
-                        </div>
-                        <div class="quest-title">${quest.title}</div>
-                        <div class="quest-description">${quest.description}</div>
-                        <button class="complete-btn" onclick="completeQuest(${quest.quest_id})" ${isCompleted ? 'disabled' : ''}>
-                            ${isCompleted ? '✓ Completed' : 'Mark as Complete'}
-                        </button>
-                    `;
-                    questList.appendChild(questCard);
-                });
-            })
-            .catch(error => {
-                console.error('Error loading quests:', error);
-                document.getElementById('quest-list').innerHTML = '<p style="color: #f44336;">Error loading quests. Please try again.</p>';
-            });
+        MOCK_QUESTS.forEach(quest => {
+            const questCard = document.createElement('div');
+            questCard.className = 'quest-card';
+            questCard.setAttribute('data-quest-id', quest.quest_id);
+            
+            const isCompleted = localStorage.getItem('quest_' + quest.quest_id) === 'completed';
+            
+            questCard.innerHTML = `
+                <div>
+                    <span class="quest-category category-${quest.category}">${quest.category}</span>
+                    <span class="quest-status ${isCompleted ? 'completed' : quest.status}">
+                        ${isCompleted ? 'COMPLETED' : quest.status.toUpperCase()}
+                    </span>
+                </div>
+                <div class="quest-title">${quest.title}</div>
+                <div class="quest-description">${quest.description}</div>
+                <button class="complete-btn" onclick="completeQuest(${quest.quest_id})" ${isCompleted ? 'disabled' : ''}>
+                    ${isCompleted ? '✓ Completed' : 'Mark as Complete'}
+                </button>
+            `;
+            questList.appendChild(questCard);
+        });
     }
 
     // Complete a quest
@@ -657,16 +768,9 @@
 
     // Load shop items
     function loadShop() {
-        fetch('/api/shop')
-            .then(response => response.json())
-            .then(shopData => {
-                renderShopItems(shopData.avatars, 'avatars-grid', 'avatar');
-                renderShopItems(shopData.cosmetics, 'cosmetics-grid', 'cosmetic');
-                renderCrateItems(shopData.vip_crates, 'crates-grid');
-            })
-            .catch(error => {
-                console.error('Error loading shop:', error);
-            });
+        renderShopItems(MOCK_SHOP.avatars, 'avatars-grid', 'avatar');
+        renderShopItems(MOCK_SHOP.cosmetics, 'cosmetics-grid', 'cosmetic');
+        renderCrateItems(MOCK_SHOP.vip_crates, 'crates-grid');
     }
 
     // Render VIP crate items
@@ -677,7 +781,6 @@
         crates.forEach(crate => {
             const crateDiv = document.createElement('div');
             crateDiv.className = 'shop-item';
-            crateDiv.style.cursor = 'pointer';
             
             crateDiv.innerHTML = `
                 <div class="shop-item-emoji">${crate.emoji}</div>
@@ -685,117 +788,94 @@
                 <div style="font-size: 12px; color: #ff9800; margin: 5px 0;">VIP ${crate.vip_required}+ Required</div>
                 <div class="shop-item-price">${crate.price} coins</div>
                 <div style="font-size: 11px; color: #666; margin-top: 5px;">${crate.description}</div>
-                <button class="buy-btn" onclick="openCrate('${crate.id}', ${crate.price}, ${crate.vip_required})">Open Crate</button>
+                <button class="buy-btn" onclick="openCrate('${crate.id}', ${crate.price})">Open Crate</button>
             `;
             
             container.appendChild(crateDiv);
         });
     }
 
-    // Open a crate
-    function openCrate(crateId, price, vipRequired) {
-        // For demo purposes, let's assume user has VIP level 5 (can access all crates)
-        const userVipLevel = parseInt(localStorage.getItem('vipLevel')) || 5;
-        
+    // Open a crate - Uses probability-based reward system from VIP_CRATES
+    function openCrate(crateId, price) {
         if (coins < price) {
             alert('Not enough coins! You need ' + price + ' coins to open this crate.');
             return;
         }
         
-        // Deduct coins
         coins -= price;
         updateCoins();
-        localStorage.setItem('coins', coins);
         
-        // Call API to open crate
-        fetch(`/api/vip/crates/${crateId}/open`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ vip_level: userVipLevel })
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.error) {
-                alert('Error: ' + result.error);
-                // Refund coins if there was an error
-                coins += price;
-                updateCoins();
-                localStorage.setItem('coins', coins);
-                return;
-            }
-            
-            // Show reward animation
-            const reward = result.reward;
-            const rewardDiv = document.createElement('div');
-            rewardDiv.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                padding: 40px 60px;
-                border-radius: 15px;
-                font-size: 24px;
-                font-weight: bold;
-                z-index: 2000;
-                text-align: center;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-                animation: bounce 0.5s ease;
-            `;
-            
-            const rarityColors = {
-                'common': '#9e9e9e',
-                'uncommon': '#4caf50',
-                'rare': '#2196f3',
-                'epic': '#9c27b0',
-                'legendary': '#ff9800',
-                'mythic': '#f44336'
-            };
-            
-            rewardDiv.innerHTML = `
-                <div style="font-size: 64px; margin-bottom: 20px;">${reward.emoji}</div>
-                <div style="font-size: 28px; margin-bottom: 10px;">${reward.item}</div>
-                <div style="font-size: 16px; color: ${rarityColors[reward.rarity]}; text-transform: uppercase; letter-spacing: 2px;">
-                    ${reward.rarity}
-                </div>
-                ${reward.type === 'points' ? `<div style="font-size: 20px; margin-top: 15px;">+${reward.value} coins 💰</div>` : ''}
-            `;
-            
-            document.body.appendChild(rewardDiv);
-            
-            // Add bounce animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes bounce {
-                    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-                    50% { transform: translate(-50%, -50%) scale(1.1); }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // If reward is points, add them to coins
-            if (reward.type === 'points' && reward.value) {
-                coins += reward.value;
-                updateCoins();
-                localStorage.setItem('coins', coins);
-            }
-            
-            setTimeout(() => {
-                rewardDiv.remove();
-                style.remove();
-            }, 3500);
-        })
-        .catch(error => {
-            console.error('Error opening crate:', error);
-            alert('Error opening crate. Please try again.');
-            // Refund coins
-            coins += price;
+        // Get crate rewards
+        const crateData = VIP_CRATES[crateId];
+        if (!crateData) {
+            alert('Invalid crate!');
+            coins += price; // Refund
             updateCoins();
-            localStorage.setItem('coins', coins);
-        });
+            return;
+        }
+        
+        // Select reward based on probability (same logic as quest_board.py)
+        const rewards = crateData.rewards;
+        const randomValue = Math.random();
+        let cumulativeProbability = 0.0;
+        let selectedReward = rewards[rewards.length - 1]; // Fallback to last reward
+        
+        for (const reward of rewards) {
+            cumulativeProbability += reward.probability;
+            if (randomValue <= cumulativeProbability) {
+                selectedReward = reward;
+                break;
+            }
+        }
+        
+        // If reward is points, add them
+        if (selectedReward.type === 'points' && selectedReward.value) {
+            coins += selectedReward.value;
+            updateCoins();
+        }
+        
+        // Rarity colors
+        const rarityColors = {
+            'common': '#9e9e9e',
+            'uncommon': '#4caf50',
+            'rare': '#2196f3',
+            'epic': '#9c27b0',
+            'legendary': '#ff9800',
+            'mythic': '#f44336'
+        };
+        
+        // Show reward animation
+        const rewardDiv = document.createElement('div');
+        rewardDiv.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 60px;
+            border-radius: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 2000;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        `;
+        
+        rewardDiv.innerHTML = `
+            <div style="font-size: 64px; margin-bottom: 20px;">${selectedReward.emoji}</div>
+            <div style="font-size: 28px; margin-bottom: 10px;">${selectedReward.item}</div>
+            <div style="font-size: 16px; color: ${rarityColors[selectedReward.rarity]}; text-transform: uppercase; letter-spacing: 2px;">
+                ${selectedReward.rarity}
+            </div>
+            ${selectedReward.type === 'points' && selectedReward.value ? `<div style="font-size: 20px; margin-top: 15px;">+${selectedReward.value} coins 💰</div>` : ''}
+        `;
+        
+        document.body.appendChild(rewardDiv);
+        
+        setTimeout(() => {
+            rewardDiv.remove();
+        }, 3500);
     }
 
     // Render shop items
@@ -813,7 +893,7 @@
             
             let buttonHTML = '';
             if (!owned) {
-                buttonHTML = `<button class="buy-btn" onclick="buyItem('${item.id}', ${item.price}, '${itemType}')">Buy - ${item.price} 💰</button>`;
+                buttonHTML = `<button class="buy-btn" onclick="buyItem('${item.id}', ${item.price}, '${itemType}', '${item.emoji}', '${item.name}', '${item.type}')">Buy - ${item.price} 💰</button>`;
             } else if (!equipped && (itemType === 'avatar' || item.type === 'title')) {
                 buttonHTML = `<button class="equip-btn" onclick="equipItem('${item.id}', '${item.emoji}', '${item.name}', '${item.type}')">Equip</button>`;
             } else if (equipped) {
@@ -834,16 +914,15 @@
     }
 
     // Buy item
-    function buyItem(itemId, price, itemType) {
+    function buyItem(itemId, price, itemType, emoji, name, type) {
         if (coins >= price) {
             coins -= price;
             ownedItems.push(itemId);
             localStorage.setItem('coins', coins);
             localStorage.setItem('ownedItems', JSON.stringify(ownedItems));
             updateCoins();
-            loadShop(); // Refresh shop display
+            loadShop();
             
-            // Show purchase success
             const message = document.createElement('div');
             message.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #4caf50; color: white; padding: 20px 40px; border-radius: 10px; font-size: 20px; font-weight: bold; z-index: 2000;';
             message.textContent = '✓ Purchase Successful!';
@@ -867,12 +946,11 @@
             localStorage.setItem('equippedTitle', equippedTitle);
         }
         updateProfile();
-        loadShop(); // Refresh shop display
+        loadShop();
     }
 
     // Refresh quests button
     document.getElementById('refresh-quests').addEventListener('click', function() {
-        // Clear completed quests from localStorage
         Object.keys(localStorage).forEach(key => {
             if (key.startsWith('quest_')) {
                 localStorage.removeItem(key);
