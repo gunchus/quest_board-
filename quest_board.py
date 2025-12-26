@@ -257,7 +257,10 @@ def api_crate_details(crate_id):
 def serve_images(image_name: str):
     image_type = image_name.split(".")[-1]
     current_path = os.getcwd()
-    full_path = current_path + "/client/images/" + image_name
+    # Try both paths for compatibility
+    full_path = current_path + "/images/" + image_name
+    if not os.path.exists(full_path):
+        full_path = current_path + "/client/images/" + image_name
     if os.path.exists(full_path):
         return send_file(full_path, mimetype="image/" + image_type)
     abort(404, description=image_name + " not found")
@@ -266,7 +269,10 @@ def serve_images(image_name: str):
 @app.route('/styles/<style_name>', methods=['GET'])
 def serve_styles(style_name: str):
     current_path = os.getcwd()
-    full_path = current_path + "/client/styles/" + style_name
+    # Try both paths for compatibility
+    full_path = current_path + "/styles/" + style_name
+    if not os.path.exists(full_path):
+        full_path = current_path + "/client/styles/" + style_name
     if os.path.exists(full_path):
         return send_file(full_path, mimetype="text/css")
     abort(404, description=style_name + " not found")
@@ -275,7 +281,10 @@ def serve_styles(style_name: str):
 @app.route('/scripts/<script_name>', methods=['GET'])
 def serve_scripts(script_name: str):
     current_path = os.getcwd()
-    full_path = current_path + "/client/scripts/" + script_name
+    # Try both paths for compatibility
+    full_path = current_path + "/scripts/" + script_name
+    if not os.path.exists(full_path):
+        full_path = current_path + "/client/scripts/" + script_name
     if os.path.exists(full_path):
         return send_file(full_path, mimetype="application/javascript")
     abort(404, description=script_name + " not found")

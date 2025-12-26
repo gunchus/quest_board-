@@ -1,0 +1,63 @@
+{
+    "bronze_crate": {
+        "id": "bronze_crate",
+        "name": "Bronze VIP Crate",
+        "emoji": "📦",
+        "description": "Basic VIP crate with common rewards",
+        "vip_level_required": 1,
+        "cost": 100,
+        "rewards": [
+            {"item": "Common Avatar", "type": "avatar", "emoji": "👤", "probability": 0.50, "rarity": "common"},
+            {"item": "Basic Border", "type": "border", "emoji": "⬜", "probability": 0.30, "rarity": "common"},
+            {"item": "50 Bonus Points", "type": "points", "emoji": "💰", "value": 50, "probability": 0.15, "rarity": "uncommon"},
+            {"item": "Epic Title", "type": "title", "emoji": "🎯", "probability": 0.05, "rarity": "rare"}
+        ]
+    },
+    "silver_crate": {
+        "id": "silver_crate",
+        "name": "Silver VIP Crate",
+        "emoji": "🎁",
+        "description": "Advanced VIP crate with uncommon and rare rewards",
+        "vip_level_required": 2,
+        "cost": 250,
+        "rewards": [
+            {"item": "Rare Avatar", "type": "avatar", "emoji": "🦸", "probability": 0.40, "rarity": "uncommon"},
+            {"item": "Premium Border", "type": "border", "emoji": "🔷", "probability": 0.30, "rarity": "uncommon"},
+            {"item": "150 Bonus Points", "type": "points", "emoji": "💎", "value": 150, "probability": 0.20, "rarity": "rare"},
+            {"item": "Legendary Title", "type": "title", "emoji": "👑", "probability": 0.08, "rarity": "epic"},
+            {"item": "Mystery Reward", "type": "special", "emoji": "❓", "probability": 0.02, "rarity": "legendary"}
+        ]
+    },
+    "gold_crate": {
+        "id": "gold_crate",
+        "name": "Gold VIP Crate",
+        "emoji": "🏆",
+        "description": "Premium VIP crate with epic and legendary rewards",
+        "vip_level_required": 3,
+        "cost": 500,
+        "rewards": [
+            {"item": "Epic Avatar", "type": "avatar", "emoji": "🌟", "probability": 0.35, "rarity": "rare"},
+            {"item": "Diamond Border", "type": "border", "emoji": "💠", "probability": 0.25, "rarity": "epic"},
+            {"item": "300 Bonus Points", "type": "points", "emoji": "🔥", "value": 300, "probability": 0.20, "rarity": "epic"},
+            {"item": "Ultimate Title", "type": "title", "emoji": "⚡", "probability": 0.15, "rarity": "epic"},
+            {"item": "Exclusive Avatar Pack", "type": "avatar_pack", "emoji": "🎭", "probability": 0.04, "rarity": "legendary"},
+            {"item": "Jackpot 1000 Points", "type": "points", "emoji": "💸", "value": 1000, "probability": 0.01, "rarity": "legendary"}
+        ]
+    },
+    "platinum_crate": {
+        "id": "platinum_crate",
+        "name": "Platinum VIP Crate",
+        "emoji": "💫",
+        "description": "Ultimate VIP crate with guaranteed legendary rewards",
+        "vip_level_required": 5,
+        "cost": 1000,
+        "rewards": [
+            {"item": "Legendary Avatar", "type": "avatar", "emoji": "🔱", "probability": 0.30, "rarity": "legendary"},
+            {"item": "Cosmic Border", "type": "border", "emoji": "🌌", "probability": 0.25, "rarity": "legendary"},
+            {"item": "500 Bonus Points", "type": "points", "emoji": "💵", "value": 500, "probability": 0.20, "rarity": "legendary"},
+            {"item": "Divine Title", "type": "title", "emoji": "✨", "probability": 0.15, "rarity": "legendary"},
+            {"item": "Ultimate Pack", "type": "ultimate_pack", "emoji": "🎪", "probability": 0.08, "rarity": "mythic"},
+            {"item": "MEGA JACKPOT 5000 Points", "type": "points", "emoji": "🏅", "value": 5000, "probability": 0.02, "rarity": "mythic"}
+        ]
+    }
+}

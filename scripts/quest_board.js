@@ -17,74 +17,50 @@ function updateProfile() {
     document.getElementById('user-title').textContent = equippedTitle;
 }
 
-// Show login form button
-document.getElementById('show-login-btn').addEventListener('click', function() {
-    document.getElementById('welcome-page').style.display = 'none';
-    document.getElementById('login-form-page').style.display = 'block';
-});
-
-// Back to welcome button
-document.getElementById('back-to-welcome').addEventListener('click', function() {
-    document.getElementById('login-form-page').style.display = 'none';
-    document.getElementById('welcome-page').style.display = 'block';
-});
-
-// Login form submission
-document.getElementById('login-form').addEventListener('submit', function(e) {
+// Login functionality
+document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('error-message');
     
-    // For demo purposes, accept any username/password
+    // Simple validation (in production, this should be server-side)
     if (username && password) {
-        // Hide login form and show main content
-        document.getElementById('login-form-page').style.display = 'none';
+        // Hide login page and show main content
+        document.getElementById('login-page').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
+        document.body.classList.remove('login-active');
         document.getElementById('user_status').textContent = 'Welcome, ' + username + '!';
         
         // Load quests and update UI
         updateCoins();
         updateProfile();
         loadQuests();
+    } else {
+        errorMessage.textContent = 'Please enter both username and password';
     }
-});
-
-// Signup button functionality
-document.getElementById('signup-btn').addEventListener('click', function() {
-    // For demo purposes, directly sign up as new user
-    const username = 'User' + Math.floor(Math.random() * 1000);
-    
-    // Hide login page and show main content
-    document.getElementById('login-page').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
-    document.getElementById('user_status').textContent = 'Welcome, ' + username + '!';
-    
-    // Give new users some starter coins
-    coins = 100;
-    updateCoins();
-    updateProfile();
-    loadQuests();
-    
-    // Show welcome message
-    const message = document.createElement('div');
-    message.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #4caf50; color: white; padding: 20px 40px; border-radius: 10px; font-size: 20px; font-weight: bold; z-index: 2000;';
-    message.innerHTML = '🎉 Welcome! You received 100 starter coins! 💰';
-    document.body.appendChild(message);
-    
-    setTimeout(() => {
-        message.remove();
-    }, 2500);
 });
 
 // Logout functionality
 document.getElementById('logout-btn').addEventListener('click', function() {
-    document.getElementById('welcome-page').style.display = 'block';
+    document.getElementById('login-page').style.display = 'block';
     document.getElementById('main-content').style.display = 'none';
-    // Clear form fields
-    document.getElementById('login-username').value = '';
-    document.getElementById('login-password').value = '';
+    document.body.classList.add('login-active');
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('error-message').textContent = '';
 });
+
+// Set initial login background
+document.body.classList.add('login-active');
+
+// Signup link
+document.getElementById('signup-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    alert('Signup functionality coming soon!');
+});
+
 
 // Shop modal functionality
 document.getElementById('shop-btn').addEventListener('click', function() {
@@ -102,17 +78,21 @@ window.addEventListener('click', function(event) {
     }
 });
 
-// Load quests from API
+// Load quests from JSON file
 function loadQuests() {
     document.getElementById('quest-list').innerHTML = '<p style="text-align: center; color: #666;">Loading quests...</p>';
     
-    fetch('/api/quests?count=6')
+    fetch('data/quests.json')
         .then(response => response.json())
         .then(quests => {
             const questList = document.getElementById('quest-list');
             questList.innerHTML = '';
             
-            quests.forEach(quest => {
+            // Randomly select 6 quests
+            const shuffled = quests.sort(() => 0.5 - Math.random());
+            const selectedQuests = shuffled.slice(0, 6);
+            
+            selectedQuests.forEach(quest => {
                 const questCard = document.createElement('div');
                 questCard.className = 'quest-card';
                 questCard.setAttribute('data-quest-id', quest.quest_id);
@@ -171,7 +151,7 @@ function completeQuest(questId) {
 
 // Load shop items
 function loadShop() {
-    fetch('/api/shop')
+    fetch('data/shop.json')
         .then(response => response.json())
         .then(shopData => {
             renderShopItems(shopData.avatars, 'avatars-grid', 'avatar');
@@ -210,106 +190,118 @@ function renderCrateItems(crates, containerId) {
 function openCrate(crateId, price, vipRequired) {
     // For demo purposes, let's assume user has VIP level 5 (can access all crates)
     const userVipLevel = parseInt(localStorage.getItem('vipLevel')) || 5;
-    
+
     if (coins < price) {
         alert('Not enough coins! You need ' + price + ' coins to open this crate.');
         return;
     }
-    
+
+    if (userVipLevel < vipRequired) {
+        alert(`VIP level ${vipRequired} required. Your level: ${userVipLevel}`);
+        return;
+    }
+
     // Deduct coins
     coins -= price;
     updateCoins();
     localStorage.setItem('coins', coins);
-    
-    // Call API to open crate
-    fetch(`/api/vip/crates/${crateId}/open`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ vip_level: userVipLevel })
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.error) {
-            alert('Error: ' + result.error);
-            // Refund coins if there was an error
+
+    fetch('data/vip_crates.json')
+        .then(response => response.json())
+        .then(crates => {
+            const crate = crates[crateId];
+            if (!crate) {
+                alert('Error: Invalid crate ID');
+                // Refund coins
+                coins += price;
+                updateCoins();
+                localStorage.setItem('coins', coins);
+                return;
+            }
+
+            // Select reward based on probability
+            const rewards = crate.rewards;
+            const randomValue = Math.random();
+            let cumulativeProbability = 0.0;
+            let chosenReward = rewards[rewards.length - 1]; // Fallback to last reward
+
+            for (const reward of rewards) {
+                cumulativeProbability += reward.probability;
+                if (randomValue <= cumulativeProbability) {
+                    chosenReward = reward;
+                    break;
+                }
+            }
+            
+            // Show reward animation
+            const rewardDiv = document.createElement('div');
+            rewardDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 40px 60px;
+                border-radius: 15px;
+                font-size: 24px;
+                font-weight: bold;
+                z-index: 2000;
+                text-align: center;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                animation: bounce 0.5s ease;
+            `;
+
+            const rarityColors = {
+                'common': '#9e9e9e',
+                'uncommon': '#4caf50',
+                'rare': '#2196f3',
+                'epic': '#9c27b0',
+                'legendary': '#ff9800',
+                'mythic': '#f44336'
+            };
+
+            rewardDiv.innerHTML = `
+                <div style="font-size: 64px; margin-bottom: 20px;">${chosenReward.emoji}</div>
+                <div style="font-size: 28px; margin-bottom: 10px;">${chosenReward.item}</div>
+                <div style="font-size: 16px; color: ${rarityColors[chosenReward.rarity]}; text-transform: uppercase; letter-spacing: 2px;">
+                    ${chosenReward.rarity}
+                </div>
+                ${chosenReward.type === 'points' ? `<div style="font-size: 20px; margin-top: 15px;">+${chosenReward.value} coins 💰</div>` : ''}
+            `;
+
+            document.body.appendChild(rewardDiv);
+
+            // Add bounce animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes bounce {
+                    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+                    50% { transform: translate(-50%, -50%) scale(1.1); }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // If reward is points, add them to coins
+            if (chosenReward.type === 'points' && chosenReward.value) {
+                coins += chosenReward.value;
+                updateCoins();
+                localStorage.setItem('coins', coins);
+            }
+
+            setTimeout(() => {
+                rewardDiv.remove();
+                style.remove();
+            }, 3500);
+        })
+        .catch(error => {
+            console.error('Error opening crate:', error);
+            alert('Error opening crate. Please try again.');
+            // Refund coins
             coins += price;
             updateCoins();
             localStorage.setItem('coins', coins);
-            return;
-        }
-        
-        // Show reward animation
-        const reward = result.reward;
-        const rewardDiv = document.createElement('div');
-        rewardDiv.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 60px;
-            border-radius: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            z-index: 2000;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            animation: bounce 0.5s ease;
-        `;
-        
-        const rarityColors = {
-            'common': '#9e9e9e',
-            'uncommon': '#4caf50',
-            'rare': '#2196f3',
-            'epic': '#9c27b0',
-            'legendary': '#ff9800',
-            'mythic': '#f44336'
-        };
-        
-        rewardDiv.innerHTML = `
-            <div style="font-size: 64px; margin-bottom: 20px;">${reward.emoji}</div>
-            <div style="font-size: 28px; margin-bottom: 10px;">${reward.item}</div>
-            <div style="font-size: 16px; color: ${rarityColors[reward.rarity]}; text-transform: uppercase; letter-spacing: 2px;">
-                ${reward.rarity}
-            </div>
-            ${reward.type === 'points' ? `<div style="font-size: 20px; margin-top: 15px;">+${reward.value} coins 💰</div>` : ''}
-        `;
-        
-        document.body.appendChild(rewardDiv);
-        
-        // Add bounce animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes bounce {
-                0%, 100% { transform: translate(-50%, -50%) scale(1); }
-                50% { transform: translate(-50%, -50%) scale(1.1); }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // If reward is points, add them to coins
-        if (reward.type === 'points' && reward.value) {
-            coins += reward.value;
-            updateCoins();
-            localStorage.setItem('coins', coins);
-        }
-        
-        setTimeout(() => {
-            rewardDiv.remove();
-            style.remove();
-        }, 3500);
-    })
-    .catch(error => {
-        console.error('Error opening crate:', error);
-        alert('Error opening crate. Please try again.');
-        // Refund coins
-        coins += price;
-        updateCoins();
-        localStorage.setItem('coins', coins);
-    });
+        });
 }
 
 // Render shop items
