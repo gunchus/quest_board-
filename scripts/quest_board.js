@@ -80,6 +80,7 @@ window.addEventListener('click', function(event) {
 
 // Load quests from JSON file
 function loadQuests() {
+    test = 0
     document.getElementById('quest-list').innerHTML = '<p style="text-align: center; color: #666;">Loading quests...</p>';
     
     fetch('data/quests.json')
