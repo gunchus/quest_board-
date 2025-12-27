@@ -1,0 +1,72 @@
+[
+    {
+        "quest_id": 1,
+        "title": "Run Challenge",
+        "description": "Complete 20 minutes of run",
+        "category": "cardio",
+        "status": "active"
+    },
+    {
+        "quest_id": 2,
+        "title": "Push-ups Challenge",
+        "description": "Complete 30 reps of push-ups",
+        "category": "strength",
+        "status": "active"
+    },
+    {
+        "quest_id": 3,
+        "title": "Yoga session Challenge",
+        "description": "Complete 15 minutes of yoga session",
+        "category": "flexibility",
+        "status": "active"
+    },
+    {
+        "quest_id": 4,
+        "title": "Drink water Challenge",
+        "description": "Complete 8 glasses of drink water",
+        "category": "wellness",
+        "status": "active"
+    },
+    {
+        "quest_id": 5,
+        "title": "Cycling Challenge",
+        "description": "Complete 30 minutes of cycling",
+        "category": "cardio",
+        "status": "active"
+    },
+    {
+        "quest_id": 6,
+        "title": "Squats Challenge",
+        "description": "Complete 50 reps of squats",
+        "category": "strength",
+        "status": "active"
+    },
+    {
+        "quest_id": 7,
+        "title": "Stretching routine Challenge",
+        "description": "Complete 15 minutes of stretching routine",
+        "category": "flexibility",
+        "status": "active"
+    },
+    {
+        "quest_id": 8,
+        "title": "Meditate Challenge",
+        "description": "Complete 10 minutes of meditate",
+        "category": "wellness",
+        "status": "active"
+    },
+    {
+        "quest_id": 9,
+        "title": "Walk Challenge",
+        "description": "Complete 30 minutes of walk",
+        "category": "cardio",
+        "status": "active"
+    },
+    {
+        "quest_id": 10,
+        "title": "Plank hold Challenge",
+        "description": "Complete 60 seconds of plank hold",
+        "category": "strength",
+        "status": "active"
+    }
+]

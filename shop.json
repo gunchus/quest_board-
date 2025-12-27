@@ -1,0 +1,28 @@
+{
+    "avatars": [
+        {"id": "avatar_1", "name": "Fitness Pro", "emoji": "🏋️", "price": 50, "type": "avatar"},
+        {"id": "avatar_2", "name": "Yoga Master", "emoji": "🧘", "price": 50, "type": "avatar"},
+        {"id": "avatar_3", "name": "Runner", "emoji": "🏃", "price": 50, "type": "avatar"},
+        {"id": "avatar_4", "name": "Cyclist", "emoji": "🚴", "price": 75, "type": "avatar"},
+        {"id": "avatar_5", "name": "Swimmer", "emoji": "🏊", "price": 75, "type": "avatar"},
+        {"id": "avatar_6", "name": "Champion", "emoji": "🏆", "price": 100, "type": "avatar"},
+        {"id": "avatar_7", "name": "Martial Artist", "emoji": "🥋", "price": 100, "type": "avatar"},
+        {"id": "avatar_8", "name": "Boxer", "emoji": "🥊", "price": 100, "type": "avatar"}
+    ],
+    "cosmetics": [
+        {"id": "border_1", "name": "Gold Border", "emoji": "✨", "price": 30, "type": "border", "color": "#ffd700"},
+        {"id": "border_2", "name": "Silver Border", "emoji": "⭐", "price": 20, "type": "border", "color": "#c0c0c0"},
+        {"id": "border_3", "name": "Bronze Border", "emoji": "🔶", "price": 10, "type": "border", "color": "#cd7f32"},
+        {"id": "border_4", "name": "Rainbow Border", "emoji": "🌈", "price": 150, "type": "border", "color": "linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff)"},
+        {"id": "title_1", "name": "Beginner", "emoji": "🌱", "price": 5, "type": "title"},
+        {"id": "title_2", "name": "Warrior", "emoji": "⚔️", "price": 50, "type": "title"},
+        {"id": "title_3", "name": "Legend", "emoji": "👑", "price": 100, "type": "title"},
+        {"id": "title_4", "name": "Master", "emoji": "🎖️", "price": 200, "type": "title"}
+    ],
+    "vip_crates": [
+        {"id": "bronze_crate", "name": "Bronze VIP Crate", "emoji": "📦", "price": 100, "type": "crate", "vip_required": 1, "description": "Basic VIP crate with common rewards"},
+        {"id": "silver_crate", "name": "Silver VIP Crate", "emoji": "🎁", "price": 250, "type": "crate", "vip_required": 2, "description": "Advanced VIP crate with uncommon and rare rewards"},
+        {"id": "gold_crate", "name": "Gold VIP Crate", "emoji": "🏆", "price": 500, "type": "crate", "vip_required": 3, "description": "Premium VIP crate with epic and legendary rewards"},
+        {"id": "platinum_crate", "name": "Platinum VIP Crate", "emoji": "💫", "price": 1000, "type": "crate", "vip_required": 5, "description": "Ultimate VIP crate with guaranteed legendary rewards"}
+    ]
+}
